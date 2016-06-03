@@ -1,0 +1,73 @@
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+	padding-top: 50px;
+	padding-bottom: 20px;
+	overflow-x: hidden;
+}
+
+
+#home {
+	margin-top: 1em;
+}
+
+
+#search {
+	border-radius: 0;
+	height: 3.125em;
+	padding: 5px;
+	padding-left: 15px;
+	font-size: 1em;
+	width: 100%;
+	margin-top: 1px;
+	margin-bottom: -1px;
+}
+
+
+.autocomplete_desc {
+	font-size: 80%;
+	color: darkgray;
+	margin-left: 1em;
+	font-style: italic;
+}
+
+
+.autocomplete_popularity {
+	float: right;
+	font-weight: normal;
+	font-size: 80%;
+}
+
+
+#library {
+	font-family: sans-serif;
+	margin-top: 2em;
+	display: none;
+}
+
+
+#library h1 {
+	margin: 0;
+}
+
+
+#library .description {
+	font-size: 130%;
+}
+
+
+#library .no_description {
+	font-style: italic;
+	color: gray;
+}
+
+
+#library .published {
+	text-align: right;
+}
+
+
+#library #readme {
+	background-color: #f3f3f3;
+	padding: 1em;
+	overflow: auto;
+}
