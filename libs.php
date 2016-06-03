@@ -1,7 +1,7 @@
 <?php
 $url = 'https://build.particle.io/libs.json';
 $file = 'libs.json';
-$cache_time = 60;
+$cache_time = 900;
 
 $last_ts = filemtime($file);
 
