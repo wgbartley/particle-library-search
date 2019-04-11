@@ -1,18 +1,41 @@
 var libs;
 
 var desc_length = 64;
-var libs_url = './libs.php';
+var libs_url = './libs.json';
 var sd_converter = new showdown.Converter();
+var max_row_shown = 0;
 
 $(document).ready(function() {
 	$.get(libs_url, function(resp) {
 		libs = resp;
+
+		libs.sort(function(a, b) {
+			return b.overall_popularity-a.overall_popularity;
+		});
+
 		init();
 	});
 });
 
 
 function init() {
+	init_search();
+	init_home();
+
+	on_hash_change();
+	window.onhashchange = on_hash_change;
+}
+
+
+function on_hash_change() {
+	if(window.location.hash.substring(1).length>0) {
+		$('#search').autocomplete('search', window.location.hash.substring(1));
+		$('ul.ui-autocomplete').find('li:first').click();
+	}
+}
+
+
+function init_search() {
 	$('#search').autocomplete({
 		minLength: 1,
 		focus: function(e, u) {
@@ -26,10 +49,67 @@ function init() {
 	}
 
 
-	if(window.location.hash.substring(1).length>0) {
-		$('#search').autocomplete('search', window.location.hash.substring(1));
-		$('#ui-id-2').click();
+	$('#search').change(function() {
+		if($(this).val().length==0) {
+			$('#library').hide();
+			$('#home').show();
+
+			window.location.hash = '';
+		}
+	});
+}
+
+
+function init_home() {
+	var html = '';
+
+	for(var i=0; i<libs.length;) {
+		html = '';
+		var css_display = '';
+
+		if(window.document.body.offsetHeight>=window.innerHeight)
+			css_display = 'display:none';
+
+		html += '<div class="row" style="'+css_display+'" data-rownum="'+Math.floor(i/3)+'">';
+		html += '<div class="col-md-2"></div>';
+
+		for(var j=0; j<3; j++) {
+			if(libs[i]==undefined)
+				break;
+
+			if(libs[i].description==undefined)
+				libs[i].description = '';
+
+			if(libs[i].description==null)
+				libs[i].description = '';
+
+			html += '<div class="col-md-2">';
+			html += '<h3><a href="#'+libs[i].title+'">'+libs[i].name+'</a></h3>';
+			html += '<div class="description">'+sd_converter.makeHtml(libs[i].description)+'</div>';
+			html += '</div>';
+
+			if(j<2)
+				html += '<div class="col-md-1"></div>';
+
+			i++;
+		}
+
+		html += '<div class="col-md-2"></div>';
+		html += '</div>';
+
+		$('#home .more').before(html);
 	}
+
+	// max_row_shown = Math.ceil(home_height/150);
+}
+
+
+function home_show_more() {
+	// for(var i=max_row_shown; i<max_row_shown+Math.ceil(home_height/150); i++) {
+	// 	$('div.row[data-rownum="'+i+'"]').show();
+	// }
+
+	// max_row_shown = i;
 }
 
 
@@ -122,6 +202,7 @@ function search_select(e, u) {
 		$('#readme').html(sd_converter.makeHtml(resp));
 	});
 
+	$('#home').hide();
 	$l.show();
 
 	return false;
