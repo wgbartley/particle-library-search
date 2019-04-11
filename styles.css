@@ -6,7 +6,7 @@ body {
 }
 
 
-#home {
+#search_container {
 	margin-top: 1em;
 }
 
@@ -70,4 +70,18 @@ body {
 	background-color: #f3f3f3;
 	padding: 1em;
 	overflow: auto;
+}
+
+
+#home h3 {
+	word-wrap: break-word;
+}
+
+
+#home .popularity {
+	position: absolute;
+	top: 1.5em;
+	right: 0;
+	font-style: italic;
+	color: gray;
 }
